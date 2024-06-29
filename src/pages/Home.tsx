@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { RootState } from 'redux/store'
-import { addEVMWallet, addSOLWallet } from '../redux/appSlice'
+import { addEVMWallet, addSOLWallet, setEVMBalances } from '../redux/appSlice'
+import { SUPPORT_CHAINS } from 'constants/index'
+import axios from 'axios'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -16,21 +17,37 @@ const Home = () => {
   const solPlaceholder = '6aPGSriG4XfYincvptujaUZ9Rgx1V24EhZYW9G7cqyAU, CV7qFEaNjyoZFdX9PMtpzTPBTr8GFCbCzwjokBS2uDEw, ...'
 
   const isDisable = !!evmInput || !!solInput
-  const handleCheckBalance = () => {
+  const handleCheckBalance = async () => {
+    if (!evmInput && !solInput) {
+      return
+    }
+
     if (evmInput) {
-      const addressArray = evmInput.split(',').map((address) => address.trim())
+      const sanitizedEvmInput = evmInput.replace(/\s+/g, '')
+      const addressArray = sanitizedEvmInput.split(',').map((address) => address.trim())
       addressArray.forEach((address) => {
         dispatch(addEVMWallet(address))
       })
+      for (const chainId of SUPPORT_CHAINS) {
+        for (const walletAddress of addressArray) {
+          const data = await axios
+            .get(`https://account.api.cx.metamask.io/accounts/${walletAddress}?chainId=${chainId}&includePrices=true`)
+            .then((res) => res.data)
+
+          dispatch(setEVMBalances({ address: walletAddress, chainId: chainId.toString(), balanceData: data }))
+        }
+      }
     }
     if (solInput) {
-      const addressArray = solInput.split(',').map((address) => address.trim())
+      const sanitizedSolInput = solInput.replace(/\s+/g, '')
+      const addressArray = sanitizedSolInput.split(',').map((address) => address.trim())
       addressArray.forEach((address) => {
         dispatch(addSOLWallet(address))
       })
     }
     ;(evmInput || solInput) && navigate('/balance')
   }
+
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="font-bold text-2xl">Balance Manager</div>

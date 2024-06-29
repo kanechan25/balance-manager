@@ -3,10 +3,9 @@ export const CHAIN_ID_KEYS = Object.freeze({
   10: 'Optimism',
   56: 'BNB',
   137: 'Polygon',
-  5000: 'Mantle',
   8453: 'Base',
   42161: 'Arbitrum One',
   43114: 'Avalanche',
 })
 
-export const SUPPORT_CHAINS = [1, 10, 56, 137, 5000, 8453, 42161, 43114]
+export const SUPPORT_CHAINS = [1, 10, 56, 137, 8453, 42161, 43114]
