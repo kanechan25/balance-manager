@@ -1,16 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { supportChains } from 'constants/index'
+import { IWalletSlice, OptionChains } from 'types'
 
-interface IWalletSlice {
-  evm: string[]
-  sol: string[]
-  evmBalanceData: Record<string, any>
-  solBalanceData: Record<string, any>
-}
 const initialState: IWalletSlice = {
   evm: [],
   sol: [],
   evmBalanceData: {},
   solBalanceData: {},
+  supportChains: [supportChains[0]],
 }
 export const appSlice = createSlice({
   name: 'appSlice',
@@ -35,9 +32,12 @@ export const appSlice = createSlice({
     removeAllSOLWallet(state, action) {
       state.sol = []
     },
+    setSupportchains(state, action: PayloadAction<OptionChains[]>) {
+      state.supportChains = action.payload
+    },
   },
 })
 
-export const { addEVMWallet, removeAllEVMWallet, addSOLWallet, removeAllSOLWallet, setEVMBalances } = appSlice.actions
+export const { addEVMWallet, removeAllEVMWallet, addSOLWallet, removeAllSOLWallet, setEVMBalances, setSupportchains } = appSlice.actions
 
 export default appSlice.reducer

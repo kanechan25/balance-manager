@@ -4,10 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { addEVMWallet, addSOLWallet, setEVMBalances } from '../redux/appSlice'
 import { SUPPORT_CHAINS } from 'constants/index'
 import axios from 'axios'
+import MultiSelect from 'components/MultiSelect'
+import { RootState } from 'redux/store'
 
 const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const currentSupportChains = useSelector((state: RootState) => state.app.supportChains)
+  console.log('__currentSupportChains_redux: ', currentSupportChains)
   // const evmWallets = useSelector((state: RootState) => state.app.evm)
   // const solWallets = useSelector((state: RootState) => state.app.sol)
 
@@ -45,15 +49,18 @@ const Home = () => {
         dispatch(addSOLWallet(address))
       })
     }
-    ;(evmInput || solInput) && navigate('/balance')
+    // ;(evmInput || solInput) && navigate('/balance')
   }
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="font-bold text-2xl">Balance Manager</div>
       <div className="w-full">
+        <div>Support EVM Chains: </div>
+        <div className="w-full mb-4">
+          <MultiSelect />
+        </div>
         <div>Paste all EVM wallet here (separated by commas `,`)</div>
-        <div>We support: </div>
         <textarea
           value={evmInput}
           className="w-full border border-gray-950 rounded-lg p-2"
