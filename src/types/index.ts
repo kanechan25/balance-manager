@@ -8,4 +8,5 @@ export interface IWalletSlice {
   evmBalanceData: Record<string, any>
   solBalanceData: Record<string, any>
   supportChains: OptionChains[]
+  supportChainId: number[]
 }

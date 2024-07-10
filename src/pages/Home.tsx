@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { addEVMWallet, addSOLWallet, setEVMBalances } from '../redux/appSlice'
-import { SUPPORT_CHAINS } from 'constants/index'
 import axios from 'axios'
 import MultiSelect from 'components/MultiSelect'
 import { RootState } from 'redux/store'
@@ -10,8 +9,8 @@ import { RootState } from 'redux/store'
 const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const currentSupportChains = useSelector((state: RootState) => state.app.supportChains)
-  console.log('__currentSupportChains_redux: ', currentSupportChains)
+  const currentSupportChainId = useSelector((state: RootState) => state.app.supportChainId)
+  // console.log('__currentSupportChainId_redux: ', currentSupportChainId)
   // const evmWallets = useSelector((state: RootState) => state.app.evm)
   // const solWallets = useSelector((state: RootState) => state.app.sol)
 
@@ -25,22 +24,32 @@ const Home = () => {
     if (!evmInput && !solInput) {
       return
     }
-
     if (evmInput) {
-      const sanitizedEvmInput = evmInput.replace(/\s+/g, '')
-      const addressArray = sanitizedEvmInput.split(',').map((address) => address.trim())
+      const sanitizedEvmInput = evmInput.trim().replace(/\s+/g, '').replace(/,$/, '')
+      const addressArray = sanitizedEvmInput.split(',').filter((address) => address !== '')
       addressArray.forEach((address) => {
         dispatch(addEVMWallet(address))
       })
-      for (const chainId of SUPPORT_CHAINS) {
-        for (const walletAddress of addressArray) {
-          const data = await axios
-            .get(`https://account.api.cx.metamask.io/accounts/${walletAddress}?chainId=${chainId}&includePrices=true`)
-            .then((res) => res.data)
-
-          dispatch(setEVMBalances({ address: walletAddress, chainId: chainId.toString(), balanceData: data }))
+      const promises = addressArray.flatMap((address) =>
+        currentSupportChainId.map(async (chainId) => {
+          const url = `https://account.api.cx.metamask.io/accounts/${address}?chainId=${chainId}&includePrices=true`
+          try {
+            const response = await axios.get(url)
+            return { address, chainId: chainId.toString(), balanceData: response.data }
+          } catch (error) {
+            throw error
+          }
+        }),
+      )
+      const results = await Promise.allSettled(promises)
+      results.forEach((result) => {
+        if (result.status === 'fulfilled') {
+          console.log('__result__', result)
+          dispatch(setEVMBalances(result.value))
+        } else {
+          console.error('Failed to fetch balance for:', result.reason)
         }
-      }
+      })
     }
     if (solInput) {
       const sanitizedSolInput = solInput.replace(/\s+/g, '')

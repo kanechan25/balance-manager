@@ -8,6 +8,7 @@ const initialState: IWalletSlice = {
   evmBalanceData: {},
   solBalanceData: {},
   supportChains: [supportChains[0]],
+  supportChainId: [1],
 }
 export const appSlice = createSlice({
   name: 'appSlice',
@@ -32,12 +33,16 @@ export const appSlice = createSlice({
     removeAllSOLWallet(state, action) {
       state.sol = []
     },
-    setSupportchains(state, action: PayloadAction<OptionChains[]>) {
+    setSupportChains(state, action: PayloadAction<OptionChains[]>) {
       state.supportChains = action.payload
+    },
+    setSupportChainId(state, action: PayloadAction<number[]>) {
+      state.supportChainId = action.payload
     },
   },
 })
 
-export const { addEVMWallet, removeAllEVMWallet, addSOLWallet, removeAllSOLWallet, setEVMBalances, setSupportchains } = appSlice.actions
+export const { addEVMWallet, removeAllEVMWallet, addSOLWallet, removeAllSOLWallet, setEVMBalances, setSupportChainId, setSupportChains } =
+  appSlice.actions
 
 export default appSlice.reducer

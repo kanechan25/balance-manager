@@ -1,6 +1,6 @@
 import { OptionChains } from 'types'
 
-export const CHAIN_KEYS = Object.freeze({
+export const CHAIN_KEYS: Record<string, string> = Object.freeze({
   ETHEREUM: 'Ethereum',
   OP: 'Optimism',
   BNB: 'BNB',
@@ -9,7 +9,7 @@ export const CHAIN_KEYS = Object.freeze({
   ARBITRUM: 'Arbitrum One',
   AVAX: 'Avalanche',
 })
-export const CHAIN_VALUE_KEYS = Object.freeze({
+export const CHAIN_VALUE_KEYS: Record<string, string> = Object.freeze({
   ETHEREUM: 'evm',
   OP: 'op',
   BNB: 'bnb',
@@ -18,7 +18,7 @@ export const CHAIN_VALUE_KEYS = Object.freeze({
   ARBITRUM: 'arbitrum',
   AVAX: 'avax',
 })
-export const CHAIN_ID_KEYS: { [key: string]: number } = {
+export const CHAIN_ID_KEYS: Record<string, number> = {
   [CHAIN_KEYS.ETHEREUM]: 1,
   [CHAIN_KEYS.OP]: 10,
   [CHAIN_KEYS.BNB]: 56,

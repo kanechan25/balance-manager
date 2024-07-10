@@ -5,7 +5,8 @@ import { CHAIN_KEYS, CHAIN_VALUE_KEYS, supportChains } from 'constants/index'
 import { OptionChains } from 'types'
 import { RootState } from 'redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { setSupportchains } from '../redux/appSlice'
+import { setSupportChains, setSupportChainId } from '../redux/appSlice'
+import { findChainIdByKeyValue } from 'helper/index'
 
 const StyledAutocomplete = styled(Autocomplete)`
   .MuiAutocomplete-inputRoot {
@@ -27,8 +28,13 @@ const MultiSelect: React.FC = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: OptionChains[] | null) => {
     if (newValue) {
+      const arrayChainKeys: number[] = newValue
+        .map((chain) => findChainIdByKeyValue(chain.value)) // This will be (number | undefined)[]
+        .filter((chainId): chainId is number => chainId !== undefined) // Filter out undefined values
+
       setSelectedOptions(newValue)
-      dispatch(setSupportchains(newValue))
+      dispatch(setSupportChains(newValue))
+      dispatch(setSupportChainId(arrayChainKeys))
     }
   }
   return (
