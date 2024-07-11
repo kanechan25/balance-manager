@@ -1,6 +1,6 @@
 import React from 'react'
 import Home from 'pages/Home'
-import Balance from './Balance'
+import Balanager from './Balanager'
 type TRoutes = {
   href: string
   id: string
@@ -15,10 +15,10 @@ export const routes: TRoutes[] = [
     element: <Home />,
   },
   {
-    href: '/balance',
-    id: 'balance',
-    name: 'Balance',
-    element: <Balance />,
+    href: '/balanager',
+    id: 'balanager',
+    name: 'Balanager',
+    element: <Balanager />,
   },
   // TODO: Add more: 1 tab `list`: to add my list addresses or one more an address into my list
   // TODO: Add more: 2 option:

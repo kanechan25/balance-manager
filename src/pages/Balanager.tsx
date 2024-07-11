@@ -1,9 +1,10 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'redux/store'
-const Balance = () => {
+const Balanager = () => {
   const dispatch = useDispatch()
   const evmBalanceData = useSelector((state: RootState) => state.app.evmBalanceData)
+  const evmWalletList = useSelector((state: RootState) => state.app.evm)
   console.log('__evmBalanceData: ', evmBalanceData)
   return (
     <div>
@@ -12,4 +13,4 @@ const Balance = () => {
   )
 }
 
-export default Balance
+export default Balanager
