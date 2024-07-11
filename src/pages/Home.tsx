@@ -5,18 +5,19 @@ import { useNavigate } from 'react-router-dom'
 import { addEVMWallet, addSOLWallet, setEVMBalances } from '../redux/appSlice'
 import axios from 'axios'
 import MultiSelect from 'components/MultiSelect'
+import { arrayToString, stringToArray } from 'helper'
 
 const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const currentSupportChainId = useSelector((state: RootState) => state.app.supportChainId)
   // console.log('__currentSupportChainId_redux: ', currentSupportChainId)
-  // const evmWallets = useSelector((state: RootState) => state.app.evm)
-  // const solWallets = useSelector((state: RootState) => state.app.sol)
+  const evmWallets = useSelector((state: RootState) => state.app.evm)
+  const solWallets = useSelector((state: RootState) => state.app.sol)
 
-  const [evmInput, setEvmInput] = useState<string>('')
+  const [evmInput, setEvmInput] = useState<string>(arrayToString(evmWallets))
   const evmPlaceholder = '0xD2F0B248c77C0bc7D78379Ca628833cAB929EC68, 0xd89782F11a141da8523BFBe5A2a77375aFFA06e0, ...'
-  const [solInput, setSolInput] = useState<string>('')
+  const [solInput, setSolInput] = useState<string>(arrayToString(solWallets))
   const solPlaceholder = '6aPGSriG4XfYincvptujaUZ9Rgx1V24EhZYW9G7cqyAU, CV7qFEaNjyoZFdX9PMtpzTPBTr8GFCbCzwjokBS2uDEw, ...'
 
   const isDisable = !!evmInput || !!solInput
@@ -25,8 +26,7 @@ const Home = () => {
       return
     }
     if (evmInput) {
-      const sanitizedEvmInput = evmInput.trim().replace(/\s+/g, '').replace(/,$/, '')
-      const addressArray = sanitizedEvmInput.split(',').filter((address) => address !== '')
+      const addressArray = stringToArray(evmInput)
       addressArray.forEach((address) => {
         dispatch(addEVMWallet(address))
       })
@@ -52,8 +52,7 @@ const Home = () => {
       })
     }
     if (solInput) {
-      const sanitizedSolInput = solInput.replace(/\s+/g, '')
-      const addressArray = sanitizedSolInput.split(',').map((address) => address.trim())
+      const addressArray = stringToArray(solInput)
       addressArray.forEach((address) => {
         dispatch(addSOLWallet(address))
       })
@@ -74,7 +73,7 @@ const Home = () => {
           <div>Paste all EVM wallet here (separated by commas `,`)</div>
           <textarea
             value={evmInput}
-            className="w-full border border-gray-950 rounded-lg p-2"
+            className="w-full border border-gray-950 rounded-lg p-2 text-black"
             placeholder={evmPlaceholder}
             onChange={(e) => setEvmInput(e.target.value)}
           />
@@ -84,7 +83,7 @@ const Home = () => {
         <div>Paste all SOL wallet here (separated by commas `,`)</div>
         <textarea
           value={solInput}
-          className="w-full border border-gray-950 rounded-lg p-2"
+          className="w-full border border-gray-950 rounded-lg p-2 text-black"
           placeholder={solPlaceholder}
           onChange={(e) => setSolInput(e.target.value)}
         />
