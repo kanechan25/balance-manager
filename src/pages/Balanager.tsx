@@ -4,11 +4,15 @@ import { RootState } from 'redux/store'
 const Balanager = () => {
   const dispatch = useDispatch()
   const evmBalanceData = useSelector((state: RootState) => state.app.evmBalanceData)
-  const evmWalletList = useSelector((state: RootState) => state.app.evm)
+  const evmWallets = useSelector((state: RootState) => state.app.evm)
   console.log('__evmBalanceData: ', evmBalanceData)
+  console.log('__evmWallets: ', evmWallets)
   return (
     <div>
-      <h1>Balance PAGE</h1>
+      {evmWallets?.map((evmWallet) => {
+        return <div key={evmWallet}>{evmWallet}</div>
+      })}
+      {evmWallets.length === 0 && <div>NO WALLET</div>}
     </div>
   )
 }
