@@ -1,15 +1,18 @@
 import React from 'react'
 import { routes } from 'pages/routes'
 import { useNavigate } from 'react-router-dom'
+import ToggleThemeButton from 'components/Button/ToggleThemeButton'
+import icon from 'assets/images/favicon.svg'
 
 const Header = () => {
   const navigate = useNavigate()
-  function getTabItemList() {
-    const handleClick = (href: string) => {
-      navigate(`${href}`)
-    }
-    return (
-      <div className="flex gap-2">
+  const handleClick = (href: string) => {
+    navigate(`${href}`)
+  }
+
+  return (
+    <div className="flex w-full py-2 px-6 justify-between items-center mb-10">
+      {/* <div className="flex gap-2 items-center">
         {routes?.map((route) => {
           return (
             <div key={route.id} style={{ display: 'flex', cursor: 'pointer' }}>
@@ -17,10 +20,13 @@ const Header = () => {
             </div>
           )
         })}
+      </div> */}
+      <div onClick={() => navigate('/')} className="w-10 h-10 cursor-pointer">
+        <img className="" src={icon} alt="icon" />
       </div>
-    )
-  }
-  return <div>{getTabItemList()}</div>
+      <ToggleThemeButton />
+    </div>
+  )
 }
 
 export default Header

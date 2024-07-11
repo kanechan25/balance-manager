@@ -9,4 +9,5 @@ export interface IWalletSlice {
   solBalanceData: Record<string, any>
   supportChains: OptionChains[]
   supportChainId: number[]
+  isDark: boolean
 }

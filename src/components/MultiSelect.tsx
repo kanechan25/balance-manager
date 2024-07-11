@@ -13,6 +13,9 @@ const StyledAutocomplete = styled(Autocomplete)`
     padding: 6px 12px;
     border-radius: 12px;
   }
+  .MuiInputBase-root {
+    background-color: #e5e5e5;
+  }
 `
 const CustomPopper = styled(Popper)`
   .MuiAutocomplete-listbox {

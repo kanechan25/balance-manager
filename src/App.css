@@ -1,16 +1,23 @@
 :root {
-  --bg-white: #fff;
-  --bg-dark: #041c33;
-  --bg-grey: #96b5d5;
-  --bg-grey-bold: #6a97c4;
+  --white-0: #fff;
+  --white-1: #e1e1e1;
+  --white-2: #d1d1d1;
+  --dark-0: #041c33;
+  --dark-1: #132a41;
+  --dark-2: #22262b;
+  --grey: #96b5d5;
+  --grey-bold: #6a97c4;
 }
 .App {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: var(--bg-white);
   overflow-y: hidden;
+  width: 100vw;
+  height: 100vh;
+  background: var(--dark-2);
+  color: var(--white-0);
 }
 .AppContainer {
   width: 100%;
@@ -19,5 +26,5 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px 16px;
+  padding: 0px 24px;
 }

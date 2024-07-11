@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from 'redux/store'
 import { useNavigate } from 'react-router-dom'
 import { addEVMWallet, addSOLWallet, setEVMBalances } from '../redux/appSlice'
 import axios from 'axios'
 import MultiSelect from 'components/MultiSelect'
-import { RootState } from 'redux/store'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -58,26 +58,29 @@ const Home = () => {
         dispatch(addSOLWallet(address))
       })
     }
-    // ;(evmInput || solInput) && navigate('/balance')
+    if (evmInput || solInput) {
+      navigate('/balance')
+    }
   }
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
-      <div className="font-bold text-2xl">Balance Manager</div>
-      <div className="w-full">
-        <div>Support EVM Chains: </div>
-        <div className="w-full mb-4">
+      <div className="w-full flex flex-col gap-8 bg-black p-5 rounded-xl">
+        <div className="w-full flex flex-col gap-2">
+          <div>Support EVM Chains: </div>
           <MultiSelect />
         </div>
-        <div>Paste all EVM wallet here (separated by commas `,`)</div>
-        <textarea
-          value={evmInput}
-          className="w-full border border-gray-950 rounded-lg p-2"
-          placeholder={evmPlaceholder}
-          onChange={(e) => setEvmInput(e.target.value)}
-        />
+        <div className="w-full flex flex-col gap-2">
+          <div>Paste all EVM wallet here (separated by commas `,`)</div>
+          <textarea
+            value={evmInput}
+            className="w-full border border-gray-950 rounded-lg p-2"
+            placeholder={evmPlaceholder}
+            onChange={(e) => setEvmInput(e.target.value)}
+          />
+        </div>
       </div>
-      <div className="w-full mt-4">
+      <div className="w-full mt-10 flex flex-col gap-2 bg-black p-5 rounded-xl">
         <div>Paste all SOL wallet here (separated by commas `,`)</div>
         <textarea
           value={solInput}
@@ -89,7 +92,7 @@ const Home = () => {
       <button
         disabled={!isDisable}
         onClick={handleCheckBalance}
-        className={`border border-gray-950 rounded-lg p-2 mt-4 ${!isDisable ? 'bg-slate-500' : 'bg-green-500'}`}
+        className={`border border-gray-950 rounded-lg p-2 mt-10 ${!isDisable ? 'bg-slate-500' : 'bg-green-500'}`}
       >
         Check balance
       </button>
