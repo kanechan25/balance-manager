@@ -6,6 +6,7 @@ import { addEVMWallet, addSOLWallet, setEVMBalances } from '../redux/appSlice'
 import axios from 'axios'
 import MultiSelect from 'components/MultiSelect'
 import { arrayToString, stringToArray } from 'helper'
+import { ROUTES_PATH } from 'pages/routes'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -58,7 +59,7 @@ const Home = () => {
       })
     }
     if (evmInput || solInput) {
-      navigate('/balance')
+      navigate(ROUTES_PATH.BALANAGER)
     }
   }
 

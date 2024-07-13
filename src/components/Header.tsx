@@ -1,5 +1,5 @@
 import React from 'react'
-import { routes } from 'pages/routes'
+import { routes, ROUTES_PATH } from 'pages/routes'
 import { useNavigate } from 'react-router-dom'
 import ToggleThemeButton from 'components/Button/ToggleThemeButton'
 import icon from 'assets/images/favicon.svg'
@@ -21,11 +21,11 @@ const Header = () => {
           )
         })}
       </div> */}
-      <div onClick={() => navigate('/')} className="w-10 h-10 cursor-pointer">
+      <div onClick={() => navigate(ROUTES_PATH.HOME)} className="w-10 h-10 cursor-pointer">
         <img className="" src={icon} alt="icon" />
       </div>
       <div className="flex gap-3 justify-center items-center">
-        <div onClick={() => navigate('/balanager')} className="font-bold text-xl cursor-pointer">
+        <div onClick={() => navigate(ROUTES_PATH.BALANAGER)} className="font-bold text-xl cursor-pointer">
           Balanager
         </div>
         <ToggleThemeButton />

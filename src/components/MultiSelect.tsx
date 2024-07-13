@@ -27,7 +27,7 @@ const MultiSelect: React.FC = () => {
   const dispatch = useDispatch()
   const currentSupportChains = useSelector((state: RootState) => state.app.supportChains)
 
-  const [selectedOptions, setSelectedOptions] = React.useState<OptionChains[]>([currentSupportChains[0]])
+  const [selectedOptions, setSelectedOptions] = React.useState<OptionChains[]>(currentSupportChains)
 
   const handleChange = (event: React.SyntheticEvent, newValue: OptionChains[] | null) => {
     if (newValue) {
