@@ -11,3 +11,20 @@ export interface IWalletSlice {
   supportChainId: number[]
   isDark: boolean
 }
+
+export interface IWalletData {
+  chainId: string
+  dataInChain: any[]
+}
+export interface IChainConfig {
+  chainId: string
+  displayName: string
+  rpcTarget: string
+  blockExplorerUrl: string
+  decimals: number
+  ticker: string
+  tickerName: string
+  logo: string
+  network: string
+  networkId: number
+}
