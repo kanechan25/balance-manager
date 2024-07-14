@@ -3,14 +3,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'redux/store'
 import { formatTokenNumDecimal } from 'helper/formatNumber'
 import { CHAIN_ID_COLORS, chains } from 'constants/index'
-import { shortenAddress, transformEVMBalanceData } from 'helper'
+import { copyToClipboard, shortenAddress, transformEVMBalanceData } from 'helper'
+import { LightTooltip } from 'components/Tooltips'
 
 const EVMBalanager = () => {
   const evmBalanceData = useSelector((state: RootState) => state.app.evmBalanceData)
   const transformEVMData = transformEVMBalanceData(evmBalanceData)
+  const handleCopyArr = (addr: string) => {
+    copyToClipboard(addr)
+  }
   return transformEVMData?.map((chainData) => {
     const borderColor = CHAIN_ID_COLORS[Number(chainData?.chainId)]
     const chainId = Number(chainData.chainId)
+
     return (
       <div style={{ border: `2px solid ${borderColor}` }} className={`rounded-xl p-4 `} key={chainData.chainId}>
         {chainData?.dataInChain?.map((accountBl, index) => {
@@ -20,7 +25,11 @@ const EVMBalanager = () => {
                 <img src={chains[chainId].logo} alt="" className="w-6 h-6" />
                 <div>{chains[chainId].displayName}</div>
               </div>
-              <div className="w-52">{shortenAddress(accountBl?.accountAddress, 10, 10)}</div>
+              <LightTooltip title="Click to Copy!" followCursor>
+                <div onClick={() => handleCopyArr(accountBl?.accountAddress)} className="w-52 cursor-pointer">
+                  {shortenAddress(accountBl?.accountAddress, 10, 10)}
+                </div>
+              </LightTooltip>
               <div className="total-market-value flex flex-col justify-between min-w-32">
                 <div>Total Market</div>
                 <div className="text-green-500 text-lg font-bold">${formatTokenNumDecimal(accountBl?.value?.marketValue, 4)}</div>

@@ -56,3 +56,7 @@ export function removeDuplicateAddresses(walletStrings: string): string {
 
   return uniqueWalletString
 }
+
+export const copyToClipboard = (value: string) => {
+  navigator.clipboard.writeText(value)
+}
