@@ -10,7 +10,9 @@ export function arrayToString(evmWallets: string[]): string {
   if (!evmWallets) {
     return ''
   }
-  return evmWallets.join(', ')
+  const arrString = evmWallets.join(', ')
+  const validatedString = removeDuplicateAddresses(arrString)
+  return validatedString
 }
 export function stringToArray(input: string): string[] {
   if (!input) {
@@ -42,4 +44,15 @@ export const shortenAddress = (text: string | null | undefined, prefix: number, 
 export function getRandomColor() {
   const randomColor = Math.floor(Math.random() * 16777216).toString(16)
   return '#' + randomColor.padStart(6, '0')
+}
+export function removeDuplicateAddresses(walletStrings: string): string {
+  const walletArray = walletStrings.split(/\s*,\s*/)
+
+  const uniqueWalletSet = new Set(walletArray)
+
+  const uniqueWalletArray = Array.from(uniqueWalletSet)
+
+  const uniqueWalletString = uniqueWalletArray.join(', ')
+
+  return uniqueWalletString
 }

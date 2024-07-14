@@ -11,7 +11,7 @@ const Header = () => {
   }
 
   return (
-    <div className="flex w-full py-2 px-6 justify-between items-center mb-10">
+    <div className="flex fixed w-full py-2 px-6 justify-between items-center mb-10 bg-black z-50">
       {/* <div className="flex gap-2 items-center">
         {routes?.map((route) => {
           return (

@@ -13,7 +13,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  overflow-y: hidden;
+  overflow: auto;
   width: 100vw;
   height: 100vh;
   background: var(--dark-2);
@@ -26,5 +26,5 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px 16px;
+  padding: 60px 16px 24px 16px;
 }

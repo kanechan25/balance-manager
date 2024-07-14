@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { addEVMWallet, addSOLWallet, setEVMBalances } from '../redux/appSlice'
 import axios from 'axios'
 import MultiSelect from 'components/MultiSelect'
-import { arrayToString, stringToArray } from 'helper'
+import { arrayToString, removeDuplicateAddresses, stringToArray } from 'helper'
 import { ROUTES_PATH } from 'pages/routes'
 
 const Home = () => {
@@ -62,7 +62,11 @@ const Home = () => {
       navigate(ROUTES_PATH.BALANAGER)
     }
   }
-
+  const handleEVMInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const valueInput = e.target.value
+    const validatedInput = removeDuplicateAddresses(valueInput)
+    setEvmInput(validatedInput)
+  }
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="w-full flex flex-col gap-8 bg-black p-5 rounded-xl">
@@ -76,7 +80,7 @@ const Home = () => {
             value={evmInput}
             className="w-full border border-gray-950 rounded-lg p-2 text-black"
             placeholder={evmPlaceholder}
-            onChange={(e) => setEvmInput(e.target.value)}
+            onChange={(e) => handleEVMInputChange(e)}
           />
         </div>
       </div>
