@@ -9,7 +9,7 @@ import { LightTooltip } from 'components/Tooltips'
 const EVMBalanager = () => {
   const evmBalanceData = useSelector((state: RootState) => state.app.evmBalanceData)
   const transformEVMData = transformEVMBalanceData(evmBalanceData)
-  // console.log('__ transformEVMData: ', transformEVMData)
+  console.log('__ transformEVMData: ', transformEVMData)
 
   const handleCopyArr = (addr: string) => {
     copyToClipboard(addr)
@@ -36,26 +36,37 @@ const EVMBalanager = () => {
                     {shortenAddress(accountBl?.accountAddress, 10, 10)}
                   </div>
                 </LightTooltip>
-                <div className="total-market-value flex flex-col justify-between w-32 min-w-32">
-                  <div>Total Market</div>
-                  <div className="text-green-500 text-lg font-bold">${formatTokenNumDecimal(accountBl?.value?.marketValue, 4)}</div>
-                </div>
-                <div className="native-token w-36 min-w-36 flex flex-col">
-                  <div>{accountBl?.nativeBalance?.symbol}</div>
-                  <div>{formatTokenNumDecimal(accountBl?.nativeBalance?.balance, 8)}</div>
-                  <div className="text-green-500">${formatTokenNumDecimal(accountBl?.nativeBalance?.value?.marketValue, 4)}</div>
-                </div>
-                <div className="erc20-token flex gap-2">
-                  {accountBl?.tokenBalances?.map((token: any) => {
-                    return (
-                      <div className="w-44 min-w-44" key={token?.address}>
-                        <div>{token?.symbol}</div>
-                        <div>{formatTokenNumDecimal(token?.balance, 8)}</div>
-                        <div className="text-green-500">${formatTokenNumDecimal(token?.value?.marketValue, 4)}</div>
-                      </div>
-                    )
-                  })}
-                </div>
+                {accountBl?.value?.marketValue ? (
+                  <div className="flex w-full">
+                    <div className="total-market-value flex flex-col justify-between w-32 min-w-32">
+                      <div>Total Market</div>
+                      <div className="text-green-500 text-lg font-bold">${formatTokenNumDecimal(accountBl?.value?.marketValue, 4)}</div>
+                    </div>
+                    <div className="native-token w-36 min-w-36 flex flex-col">
+                      <div>{accountBl?.nativeBalance?.symbol}</div>
+                      <div>{formatTokenNumDecimal(accountBl?.nativeBalance?.balance, 8)}</div>
+                      <div className="text-green-500">${formatTokenNumDecimal(accountBl?.nativeBalance?.value?.marketValue, 4)}</div>
+                    </div>
+                    <div className="erc20-token flex gap-2">
+                      {accountBl?.tokenBalances?.map((token: any) => {
+                        return (
+                          <div className="w-44 min-w-44" key={token?.address}>
+                            <div>{token?.symbol}</div>
+                            <div>{formatTokenNumDecimal(token?.balance, 8)}</div>
+                            <div className="text-green-500">${formatTokenNumDecimal(token?.value?.marketValue, 4)}</div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex w-full">
+                    <div className="total-market-value flex gap-2 justify-between w-32 min-w-32">
+                      <div>Total Market</div>
+                      <div className="text-green-500 text-lg font-bold">${formatTokenNumDecimal(accountBl?.value?.marketValue, 4)}</div>
+                    </div>
+                  </div>
+                )}
               </div>
             )
           })}
