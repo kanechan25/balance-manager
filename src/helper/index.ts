@@ -1,10 +1,12 @@
 import { CHAIN_KEYS, CHAIN_ID_KEYS, CHAIN_VALUE_KEYS } from 'constants/index'
-import { IWalletData } from 'types'
+import { ISolBalanceData, IWalletData, OptionChains } from 'types'
 
 export const findChainIdByKeyValue = (valueKey: string): number | undefined => {
   const foundKey = Object.keys(CHAIN_VALUE_KEYS).find((key) => CHAIN_VALUE_KEYS[key] === valueKey)
-
   return foundKey ? CHAIN_ID_KEYS[CHAIN_KEYS[foundKey]] : undefined
+}
+export function getSupportChainIdsFromMultiSelect(chains: OptionChains[]) {
+  return chains.map((chain) => chain.value)
 }
 export function arrayToString(evmWallets: string[]): string {
   if (!evmWallets) {
@@ -30,6 +32,12 @@ export function transformEVMBalanceData(evmBalanceData: Record<string, Record<st
     dataInChain: Object.values(accounts).map((account) => ({
       ...account,
     })),
+  }))
+}
+export function transformSolBalanceData(solBalanceData: Record<string, Record<string, any>>): ISolBalanceData[] {
+  return Object.entries(solBalanceData).map(([addrSol, dataInChain]) => ({
+    addrSol,
+    dataInChain,
   }))
 }
 export const shortenAddress = (text: string | null | undefined, prefix: number, suffix: number) => {

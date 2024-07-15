@@ -16,6 +16,7 @@ export const CHAIN_KEYS: Record<string, string> = Object.freeze({
   BASE: 'Base',
   ARBITRUM: 'Arbitrum One',
   AVAX: 'Avalanche',
+  SOLANA: 'Solana',
 })
 export const CHAIN_VALUE_KEYS: Record<string, string> = Object.freeze({
   ETHEREUM: 'evm',
@@ -25,6 +26,7 @@ export const CHAIN_VALUE_KEYS: Record<string, string> = Object.freeze({
   BASE: 'base',
   ARBITRUM: 'arbitrum',
   AVAX: 'avax',
+  SOLANA: 'solana',
 })
 export const CHAIN_ID_KEYS: Record<string, number> = {
   ETHEREUM: 1,
@@ -34,6 +36,7 @@ export const CHAIN_ID_KEYS: Record<string, number> = {
   BASE: 8453,
   ARBITRUM: 42161,
   AVAX: 43114,
+  SOLANA: 0,
 }
 export const CHAIN_ID_COLORS: Record<number, string> = {
   1: '#6781eb',
@@ -43,6 +46,7 @@ export const CHAIN_ID_COLORS: Record<number, string> = {
   8453: '#0f57fd',
   42161: '#27384d',
   43114: '#e74948',
+  0: '#26d4b4',
 }
 export const SUPPORT_CHAINS = [
   CHAIN_ID_KEYS.ETHEREUM,
@@ -55,13 +59,13 @@ export const SUPPORT_CHAINS = [
 ]
 
 export const supportChains: OptionChains[] = [
-  { label: CHAIN_KEYS.ETHEREUM, value: CHAIN_VALUE_KEYS.ETHEREUM },
-  { label: CHAIN_KEYS.OP, value: CHAIN_VALUE_KEYS.OP },
-  { label: CHAIN_KEYS.BNB, value: CHAIN_VALUE_KEYS.BNB },
-  { label: CHAIN_KEYS.POLYGON, value: CHAIN_VALUE_KEYS.POLYGON },
-  { label: CHAIN_KEYS.BASE, value: CHAIN_VALUE_KEYS.BASE },
-  { label: CHAIN_KEYS.ARBITRUM, value: CHAIN_VALUE_KEYS.ARBITRUM },
-  { label: CHAIN_KEYS.AVAX, value: CHAIN_VALUE_KEYS.AVAX },
+  { label: CHAIN_KEYS.ETHEREUM, value: CHAIN_ID_KEYS.ETHEREUM },
+  { label: CHAIN_KEYS.OP, value: CHAIN_ID_KEYS.OP },
+  { label: CHAIN_KEYS.BNB, value: CHAIN_ID_KEYS.BNB },
+  { label: CHAIN_KEYS.POLYGON, value: CHAIN_ID_KEYS.POLYGON },
+  { label: CHAIN_KEYS.BASE, value: CHAIN_ID_KEYS.BASE },
+  { label: CHAIN_KEYS.ARBITRUM, value: CHAIN_ID_KEYS.ARBITRUM },
+  { label: CHAIN_KEYS.AVAX, value: CHAIN_ID_KEYS.AVAX },
 ]
 export const chains: {
   [key: number]: IChainConfig
@@ -151,18 +155,16 @@ export const chains: {
     tickerName: 'Avalanche',
     logo: arbitrumIcon,
   },
+  [CHAIN_ID_KEYS.SOLANA]: {
+    chainId: '0x',
+    rpcTarget: 'https://solana-mainnet.g.alchemy.com/v2/bkNf5RJfn6MHdDcdlY8qm60rS_qmtLJZ',
+    displayName: 'Solana',
+    blockExplorerUrl: 'https://explorer.solana.com/',
+    decimals: 9,
+    ticker: 'SOL',
+    tickerName: 'Solana',
+    logo: solanaIcon,
+    network: 'solana',
+    networkId: 0,
+  },
 }
-
-// [CHAIN_ID_KEYS.SOLANA]: {
-//   chainId: '0x3', //0x7EA
-//   // rpcTarget: 'https://solana-devnet.g.alchemy.com/v2/BJodaiRkcsHJzcaTbJxylVbv7hZSJaOo',
-//   rpcTarget: 'https://solana-mainnet.g.alchemy.com/v2/bkNf5RJfn6MHdDcdlY8qm60rS_qmtLJZ',
-//   displayName: 'Solana',
-//   blockExplorerUrl: 'https://explorer.solana.com/',
-//   decimals: 9,
-//   ticker: 'SOL',
-//   tickerName: 'Solana',
-//   logo: solanaIcon,
-//   network: 'solana',
-//   networkId: 2026,
-// },

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'redux/store'
 import { useNavigate } from 'react-router-dom'
-import { addEVMWallet, addSOLWallet, setEVMBalances } from '../redux/appSlice'
+import { addEVMWallet, addSOLWallet, setEVMBalances, setSolBalances } from '../redux/appSlice'
 import axios from 'axios'
 import MultiSelect from 'components/MultiSelect'
 import { arrayToString, removeDuplicateAddresses, stringToArray } from 'helper'
@@ -12,7 +12,6 @@ const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const currentSupportChainId = useSelector((state: RootState) => state.app.supportChainId)
-  // console.log('__currentSupportChainId_redux: ', currentSupportChainId)
   const evmWallets = useSelector((state: RootState) => state.app.evm)
   const solWallets = useSelector((state: RootState) => state.app.sol)
 
@@ -45,7 +44,7 @@ const Home = () => {
       const results = await Promise.allSettled(promises)
       results.forEach((result) => {
         if (result.status === 'fulfilled') {
-          console.log('__result__', result)
+          // console.log('__result.value__EVM_balances', result)
           dispatch(setEVMBalances(result.value))
         } else {
           console.error('Failed to fetch balance for:', result.reason)
@@ -53,19 +52,41 @@ const Home = () => {
       })
     }
     if (solInput) {
-      const addressArray = stringToArray(solInput)
-      addressArray.forEach((address) => {
+      const solAddressArray = stringToArray(solInput)
+      solAddressArray.forEach((address) => {
         dispatch(addSOLWallet(address))
       })
+      const solPromises = solAddressArray.flatMap(async (solAddress) => {
+        const url = `https://wallet-api.solflare.com/v3/portfolio/tokens/${solAddress}?network=mainnet&currency=USD`
+        try {
+          const response = await axios.get(url)
+          return { solAddress, balanceData: response.data }
+        } catch (error) {
+          throw error
+        }
+      })
+      const solResults = await Promise.allSettled(solPromises)
+      solResults.forEach((result) => {
+        if (result.status === 'fulfilled') {
+          // console.log('__result.value__SOL_balances', result.value)
+          dispatch(setSolBalances(result.value))
+        } else {
+          console.error('Failed to fetch balance for:', result.reason)
+        }
+      })
     }
-    if (evmInput || solInput) {
-      navigate(ROUTES_PATH.BALANAGER)
-    }
+
+    navigate(ROUTES_PATH.BALANAGER)
   }
   const handleEVMInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const valueInput = e.target.value
     const validatedInput = removeDuplicateAddresses(valueInput)
     setEvmInput(validatedInput)
+  }
+  const handleSOLInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const valueInput = e.target.value
+    const validatedInput = removeDuplicateAddresses(valueInput)
+    setSolInput(validatedInput)
   }
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
@@ -90,13 +111,13 @@ const Home = () => {
           value={solInput}
           className="w-full border border-gray-950 rounded-lg p-2 text-black"
           placeholder={solPlaceholder}
-          onChange={(e) => setSolInput(e.target.value)}
+          onChange={(e) => handleSOLInputChange(e)}
         />
       </div>
       <button
         disabled={!isDisable}
         onClick={handleCheckBalance}
-        className={`border border-gray-950 rounded-lg p-2 mt-10 ${!isDisable ? 'bg-slate-500' : 'bg-green-500'}`}
+        className={`border border-gray-950 hover:border-white rounded-lg p-2 mt-10 ${!isDisable ? 'bg-slate-500' : 'bg-green-500'}`}
       >
         Check balance
       </button>

@@ -1,6 +1,6 @@
 export interface OptionChains {
   label: string
-  value: string
+  value: number
 }
 export interface IWalletSlice {
   evm: string[]
@@ -15,6 +15,10 @@ export interface IWalletSlice {
 export interface IWalletData {
   chainId: string
   dataInChain: any[]
+}
+export interface ISolBalanceData {
+  addrSol: string
+  dataInChain: any
 }
 export interface IChainConfig {
   chainId: string

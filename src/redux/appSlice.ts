@@ -16,7 +16,9 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     addEVMWallet(state, action: PayloadAction<string>) {
-      state.evm.push(action.payload)
+      if (!state.evm.includes(action.payload)) {
+        state.evm.push(action.payload)
+      }
     },
     removeAllEVMWallet(state, action) {
       state.evm = []
@@ -29,10 +31,19 @@ export const appSlice = createSlice({
       state.evmBalanceData[chainId][address] = balanceData
     },
     addSOLWallet(state, action: PayloadAction<string>) {
-      state.sol.push(action.payload)
+      if (!state.sol.includes(action.payload)) {
+        state.sol.push(action.payload)
+      }
     },
     removeAllSOLWallet(state, action) {
       state.sol = []
+    },
+    setSolBalances(state, action: PayloadAction<{ solAddress: string; balanceData: any }>) {
+      const { solAddress, balanceData } = action.payload
+      if (!state.solBalanceData[solAddress]) {
+        state.solBalanceData[solAddress] = {}
+      }
+      state.solBalanceData[solAddress] = balanceData
     },
     setSupportChains(state, action: PayloadAction<OptionChains[]>) {
       state.supportChains = action.payload
@@ -53,6 +64,7 @@ export const {
   removeAllSOLWallet,
   setTheme,
   setEVMBalances,
+  setSolBalances,
   setSupportChainId,
   setSupportChains,
 } = appSlice.actions

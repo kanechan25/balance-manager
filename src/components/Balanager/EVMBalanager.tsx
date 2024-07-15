@@ -9,6 +9,8 @@ import { LightTooltip } from 'components/Tooltips'
 const EVMBalanager = () => {
   const evmBalanceData = useSelector((state: RootState) => state.app.evmBalanceData)
   const transformEVMData = transformEVMBalanceData(evmBalanceData)
+  // console.log('__ transformEVMData: ', transformEVMData)
+
   const handleCopyArr = (addr: string) => {
     copyToClipboard(addr)
   }
@@ -17,7 +19,7 @@ const EVMBalanager = () => {
     const chainId = Number(chainData.chainId)
 
     return (
-      <div style={{ border: `2px solid ${borderColor}` }} className={`rounded-xl p-4 `} key={chainData.chainId}>
+      <div style={{ border: `2px solid ${borderColor}` }} className={`rounded-xl p-4 w-full`} key={chainData.chainId}>
         {chainData?.dataInChain?.map((accountBl, index) => {
           return (
             <div key={accountBl?.accountAddress} className={`${index !== 0 && `border-t border-dashed `} flex w-full gap-1 relative py-2`}>
@@ -26,7 +28,7 @@ const EVMBalanager = () => {
                 <div>{chains[chainId].displayName}</div>
               </div>
               <LightTooltip title="Click to Copy!" followCursor>
-                <div onClick={() => handleCopyArr(accountBl?.accountAddress)} className="w-52 cursor-pointer">
+                <div onClick={() => handleCopyArr(accountBl?.accountAddress)} className="w-52 h-fit cursor-pointer">
                   {shortenAddress(accountBl?.accountAddress, 10, 10)}
                 </div>
               </LightTooltip>
