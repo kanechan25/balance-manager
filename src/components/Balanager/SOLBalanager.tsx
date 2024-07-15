@@ -10,7 +10,7 @@ const SOLBalanager = () => {
   const solBalanceData = useSelector((state: RootState) => state.app.solBalanceData)
   const transformSOLData = transformSolBalanceData(solBalanceData)
   const borderColor = CHAIN_ID_COLORS[0]
-  // console.log('__ transformSOLData: ', transformSOLData)
+  console.log('__ transformSOLData: ', transformSOLData)
   const handleCopyArr = (addr: string) => {
     copyToClipboard(addr)
   }
@@ -39,8 +39,10 @@ const SOLBalanager = () => {
                   return (
                     <div className="min-w-44 w-44" key={token?.name}>
                       <div>{token?.symbol}</div>
-                      <div>{formatTokenNumDecimal(token?.balance, 8)}</div>
-                      <div className="text-green-500">${formatTokenNumDecimal(token?.value?.marketValue, 4)}</div>
+                      <div>{formatTokenNumDecimal(token?.totalUiAmount, 8)}</div>
+                      <div className="text-green-500">
+                        ${formatTokenNumDecimal(Number(token?.totalUiAmount) * Number(token?.price?.usdPrice), 4)}
+                      </div>
                     </div>
                   )
                 })}
